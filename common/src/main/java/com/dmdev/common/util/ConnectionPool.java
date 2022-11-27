@@ -49,7 +49,8 @@ public class ConnectionPool
                 ConnectionPool.class.getClassLoader(),
                 new Class[]{Connection.class},
                 (proxy, method, args) -> method.getName().equals("close")
-                    ? pool.add(connection) : method.invoke(connection, args)
+                    ? pool.add((Connection)proxy)
+                    : method.invoke(connection, args)
             );
             pool.add(proxyConnection);
             sourceConnections.add(connection);
